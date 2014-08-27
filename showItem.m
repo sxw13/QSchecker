@@ -1,6 +1,7 @@
+clc;
 qsData = readQSFile('QSdata\20140611_1200.QS');
-Transformer = qsData.Transformer;
-id = 131;
+Transformer = qsData.Unit;
+id = 78;
 
 titleline = Transformer{1};
 dataline = Transformer{id};

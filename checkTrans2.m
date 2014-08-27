@@ -1,4 +1,4 @@
-%变压器潮流校验：标幺变比统一设定为1
+%变压器潮流校验：标幺变比设定为QS文件中的标幺变比
 qsData = readQSFile('QSdata\20140611_1200.QS');
 resultFile = fopen('report\reportTrans2.csv','w');
 TopoNode = qsData.TopoNode;
@@ -29,8 +29,8 @@ for id = 2:length(Transformer)
             AJ = getProperty(TopoNode,nodeIdJ,'ang');
             UJ = VJ*exp(str2num(AJ)/180*pi*1i);
 
-            kI = 1;
-            kJ = 1;
+            kI = str2num(getProperty(Transformer,id,'I_t'));
+            kJ = str2num(getProperty(Transformer,id,'J_t'));
 
             RI = str2num(getProperty(Transformer,id,'Ri*'));
             XI = str2num(getProperty(Transformer,id,'Xi*'));
@@ -84,9 +84,9 @@ for id = 2:length(Transformer)
             AJ = getProperty(TopoNode,nodeIdJ,'ang');
             UJ = VJ*exp(str2num(AJ)/180*pi*1i);
 
-            kI = 1;
-            kK = 1;
-            kJ = 1;
+            kI = str2num(getProperty(Transformer,id,'I_t'));
+            kK = str2num(getProperty(Transformer,id,'K_t'));
+            kJ = str2num(getProperty(Transformer,id,'J_t'));
 
             RI = str2num(getProperty(Transformer,id,'Ri*'));
             XI = str2num(getProperty(Transformer,id,'Xi*'));
