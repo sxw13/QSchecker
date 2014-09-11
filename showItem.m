@@ -1,7 +1,7 @@
 clc;
-qsData = readQSFile('QSdata\20140611_1200.QS');
-Transformer = qsData.Unit;
-id = 78;
+qsData = readQSFile('QSdata\20140714_0455.QS');
+Transformer = qsData.Bus;
+id = 1695;
 
 titleline = Transformer{1};
 dataline = Transformer{id};
