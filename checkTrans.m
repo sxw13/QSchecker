@@ -1,12 +1,15 @@
 %变压器潮流校验
-qsData = readQSFile('QSdata\20140611_1200.QS');
+% qsData = readQSFile('QSdata\20140611_1200.QS');
+% 
+% TopoNode = qsData('TopoNode');
+% Transformer = qsData('Transformer');
+% type = 2; %1、折算阻抗到中压侧；2、不折算阻抗到中压侧
+
 resultFile = fopen('report\reportTrans2.csv','w');
-TopoNode = qsData('TopoNode');
-Transformer = qsData('Transformer');
-type = 2; %1、折算阻抗到中压侧；2、不折算阻抗到中压侧
 
 fprintf(resultFile,'变压器编号,变压器名称,QSI端有功,计算I端有功,QSI端无功,计算I端无功,QSK端有功,计算K端有功,QSK端无功,计算K端无功,QSJ端有功,计算J端有功,QSJ端无功,计算J端无功\n');
 fprintf(resultFile,'变压器编号,变压器名称,I端节点名称,I端节点电压,I端节点相角,,K端节点名称,K端节点电压,K端节点相角,,J端节点名称,J端节点电压,J端节点相角\n');
+TopoNodeNameMap = startFind(TopoNode,'name');
 
 for idcon = keys(Transformer)
     try
@@ -20,8 +23,10 @@ for idcon = keys(Transformer)
         transName = getProperty(Transformer,id,'name');
         
         if strcmp(nodeNameK,'''''')  %处理双绕组变压器
-            nodeIdI = findData(TopoNode,'name',nodeNameI);
-            nodeIdJ = findData(TopoNode,'name',nodeNameJ);
+            nodeIdIcon = TopoNodeNameMap(nodeNameI);
+            nodeIdJcon = TopoNodeNameMap(nodeNameJ);
+            nodeIdI = nodeIdIcon{1};
+            nodeIdJ = nodeIdJcon{1};
 
             VI = str2num(getProperty(TopoNode,nodeIdI,'v'));
             AI = getProperty(TopoNode,nodeIdI,'ang');
@@ -71,9 +76,11 @@ for idcon = keys(Transformer)
             fprintf(resultFile,reportline);
             
         else   %处理三绕组变压器
-            nodeIdI = findData(TopoNode,'name',nodeNameI);
-            nodeIdK = findData(TopoNode,'name',nodeNameK);
-            nodeIdJ = findData(TopoNode,'name',nodeNameJ);
+            nodeIdIcon = TopoNodeNameMap(nodeNameI);
+            nodeIdKcon = TopoNodeNameMap(nodeNameK);
+            nodeIdJcon = TopoNodeNameMap(nodeNameJ);
+            
+            nodeIdI = nodeIdIcon{1};nodeIdK = nodeIdKcon{1};nodeIdJ = nodeIdJcon{1};
 
             VI = str2num(getProperty(TopoNode,nodeIdI,'v'));
             AI = getProperty(TopoNode,nodeIdI,'ang');
@@ -146,7 +153,8 @@ for idcon = keys(Transformer)
         end
         
     catch e
-        disp(Transformer{id});
+        name = getProperty(Transformer,id,'name');
+        disp(name);
     end
 end
 fclose(resultFile);

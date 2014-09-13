@@ -1,13 +1,17 @@
 %线路潮流校验
-QSFilePath = 'QSdata\20140611_1200.QS';
-qsData = readQSFile(QSFilePath);
+% QSFilePath = 'QSdata\20140611_1200.QS';
+% qsData = readQSFile(QSFilePath);
+
+% ACline = qsData('ACline');
+% TopoNode = qsData('TopoNode');
+% Compensator_P = qsData('Compensator_P');
+% Bus = qsData('Bus');
+
 resultFile = fopen('report\reportLine.csv','w');
-ACline = qsData('ACline');
-TopoNode = qsData('TopoNode');
-Compensator_P = qsData('Compensator_P');
-Bus = qsData('Bus');
 
 fprintf(resultFile,'线路编号,线路名称,QSI端有功,计算I端有功,I端有功差值,QSI端无功,计算I端无功,I端无功差值,QSJ端有功,计算J端有功,J端有功差值,QSJ端无功,计算J端无功,J端无功差值\n');
+TopoNodeNameMap = startFind(TopoNode,'name');
+Compensator_PPositionMap = startFind(Compensator_P,'position');
 for idcon = keys(ACline)
     id = idcon{1};
     try
@@ -15,8 +19,8 @@ for idcon = keys(ACline)
         
         nodeName1 = getProperty(ACline,id,'I_node');
         nodeName2 = getProperty(ACline,id,'J_node');
-        nodeId1con = findData(TopoNode,'name',nodeName1);
-        nodeId2con = findData(TopoNode,'name',nodeName2);
+        nodeId1con = TopoNodeNameMap(nodeName1);
+        nodeId2con = TopoNodeNameMap(nodeName2);
         nodeId1 = nodeId1con{1};
         nodeId2 = nodeId2con{1};
         
@@ -35,16 +39,18 @@ for idcon = keys(ACline)
         PJ = real(S21);QJ = imag(S21);
         
         lineName = getProperty(ACline,id,'name');
-        compids = findData(Compensator_P,'position',lineName);
-        for compidcon = compids
-            compid = compidcon{1};
-            switch getProperty(Compensator_P,compid,'node')
-                case nodeName1
-                    QI = QI - str2num(getProperty(Compensator_P,compid,'Q'));
-                    QJ = QJ + str2num(getProperty(Compensator_P,compid,'Q'));
-                case nodeName2
-                    QI = QI + str2num(getProperty(Compensator_P,compid,'Q'));
-                    QJ = QJ - str2num(getProperty(Compensator_P,compid,'Q'));
+        if isKey(Compensator_PPositionMap,lineName)
+            compids = Compensator_PPositionMap(lineName);
+            for compidcon = compids
+                compid = compidcon{1};
+                switch getProperty(Compensator_P,compid,'node')
+                    case nodeName1
+                        QI = QI - str2num(getProperty(Compensator_P,compid,'Q'));
+                        QJ = QJ + str2num(getProperty(Compensator_P,compid,'Q'));
+                    case nodeName2
+                        QI = QI + str2num(getProperty(Compensator_P,compid,'Q'));
+                        QJ = QJ - str2num(getProperty(Compensator_P,compid,'Q'));
+                end
             end
         end
         
@@ -61,7 +67,8 @@ for idcon = keys(ACline)
         fprintf(resultFile,reportline);
         
     catch e
-        disp(ACline(id));
+        name = getProperty(ACline,id,'name');
+        disp(name);
     end
 end
 fclose(resultFile);
