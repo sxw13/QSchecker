@@ -1,7 +1,7 @@
 %拓扑节点潮流校验
-qsData = readQSFile('QSdata\20140611_1200.QS');
+qsData = readQSFile('QSdata\20140714_0455.QS');
 % resultFile = fopen('E:\统计电压\邮件文档\checker_2\reportTopoNode_OnlyTopoNode.csv','w');
-resultFile = fopen('report\reportTopoNode.csv','w');
+resultFile = fopen('report\reportDetailTopoNode.csv','w');
 TopoNode = qsData.TopoNode;
 Transformer = qsData.Transformer;
 Load = qsData.Load;

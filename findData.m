@@ -5,7 +5,6 @@ function index = findData(table,propName,value)
         result = getProperty(table,id,propName);
         if strcmp(result,value)
             index = [index id];
-            break;
         end
     end
 end
