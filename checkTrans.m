@@ -1,9 +1,9 @@
 %±äÑ¹Æ÷³±Á÷Ð£Ñé
-% qsData = readQSFile('QSdata\20140611_1200.QS');
-% 
-% TopoNode = qsData('TopoNode');
-% Transformer = qsData('Transformer');
-% type = 2; %1¡¢ÕÛËã×è¿¹µ½ÖÐÑ¹²à£»2¡¢²»ÕÛËã×è¿¹µ½ÖÐÑ¹²à
+qsData = readQSFile('QSdata\20140611_1200.QS');
+
+TopoNode = qsData('TopoNode');
+Transformer = qsData('Transformer');
+type = 2; %1¡¢ÕÛËã×è¿¹µ½ÖÐÑ¹²à£»2¡¢²»ÕÛËã×è¿¹µ½ÖÐÑ¹²à
 
 resultFile = fopen('report\reportTrans2.csv','w');
 
@@ -35,8 +35,8 @@ for idcon = keys(Transformer)
             AJ = getProperty(TopoNode,nodeIdJ,'ang');
             UJ = VJ*exp(str2num(AJ)/180*pi*1i);
 
-            kI = str2num(getProperty(Transformer,id,'Itap_V'))/str2num(getProperty(Transformer,id,'I_Vol'));
-            kJ = str2num(getProperty(Transformer,id,'Jtap_V'))/str2num(getProperty(Transformer,id,'J_Vol'));
+            kI = str2num(getProperty(Transformer,id,'I_t'));
+            kJ = str2num(getProperty(Transformer,id,'J_t'));
 
             RI = str2num(getProperty(Transformer,id,'Ri*'));
             XI = str2num(getProperty(Transformer,id,'Xi*'));
@@ -92,9 +92,9 @@ for idcon = keys(Transformer)
             AJ = getProperty(TopoNode,nodeIdJ,'ang');
             UJ = VJ*exp(str2num(AJ)/180*pi*1i);
 
-            kI = str2num(getProperty(Transformer,id,'Itap_V'))/str2num(getProperty(Transformer,id,'I_Vol'));
-            kK = str2num(getProperty(Transformer,id,'Ktap_V'))/str2num(getProperty(Transformer,id,'K_Vol'));
-            kJ = str2num(getProperty(Transformer,id,'Jtap_V'))/str2num(getProperty(Transformer,id,'J_Vol'));
+            kI = str2num(getProperty(Transformer,id,'I_t'));
+            kK = str2num(getProperty(Transformer,id,'K_t'));
+            kJ = str2num(getProperty(Transformer,id,'J_t'));
 
             RI = str2num(getProperty(Transformer,id,'Ri*'));
             XI = str2num(getProperty(Transformer,id,'Xi*'));
