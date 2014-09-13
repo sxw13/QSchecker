@@ -1,13 +1,10 @@
 clc;
 qsData = readQSFile('QSdata\20140714_0455.QS');
-Transformer = qsData.Transformer;
-id = 560;
+Transformer = qsData('Transformer');
+id = 559;
 
-titleline = Transformer{1};
-dataline = Transformer{id};
-title = regexp(titleline, '\s+', 'split');
-data = regexp(dataline, '\s+', 'split');
+item = Transformer(num2str(id));
 
-for idd = 2:length(title)
-    disp([title{idd} ' : ' data{idd}]);
+for idd = keys(item)
+    disp([idd{1} ' : ' item(idd{1})]);
 end

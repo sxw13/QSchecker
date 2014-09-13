@@ -1,15 +1,16 @@
 %变压器潮流校验
 qsData = readQSFile('QSdata\20140611_1200.QS');
 resultFile = fopen('report\reportTrans2.csv','w');
-TopoNode = qsData.TopoNode;
-Transformer = qsData.Transformer;
+TopoNode = qsData('TopoNode');
+Transformer = qsData('Transformer');
 type = 2; %1、折算阻抗到中压侧；2、不折算阻抗到中压侧
 
 fprintf(resultFile,'变压器编号,变压器名称,QSI端有功,计算I端有功,QSI端无功,计算I端无功,QSK端有功,计算K端有功,QSK端无功,计算K端无功,QSJ端有功,计算J端有功,QSJ端无功,计算J端无功\n');
 fprintf(resultFile,'变压器编号,变压器名称,I端节点名称,I端节点电压,I端节点相角,,K端节点名称,K端节点电压,K端节点相角,,J端节点名称,J端节点电压,J端节点相角\n');
 
-for id = 2:length(Transformer)
+for idcon = keys(Transformer)
     try
+        id = idcon{1};
         if strcmp(getProperty(Transformer,id,'I_off'),'1') || strcmp(getProperty(Transformer,id,'K_off'),'1') || strcmp(getProperty(Transformer,id,'J_off'),'1') continue; end
 
         nodeNameI = getProperty(Transformer,id,'I_node');
