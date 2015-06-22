@@ -1,5 +1,5 @@
 %线路潮流校验
-% QSFilePath = 'QSdata\20140611_1200.QS';
+% QSFilePath = 'QSdata\20140714_0455.QS';
 % qsData = readQSFile(QSFilePath);
 
 % ACline = qsData('ACline');
@@ -37,22 +37,22 @@ for idcon = keys(ACline)
         S21 = U2*conj((U2-U1)/Z)-abs(U2)^2*B/2*1i;
         PI = real(S12);QI = imag(S12);
         PJ = real(S21);QJ = imag(S21);
-        
         lineName = getProperty(ACline,id,'name');
-        if isKey(Compensator_PPositionMap,lineName)
-            compids = Compensator_PPositionMap(lineName);
-            for compidcon = compids
-                compid = compidcon{1};
-                switch getProperty(Compensator_P,compid,'node')
-                    case nodeName1
-                        QI = QI - str2num(getProperty(Compensator_P,compid,'Q'));
-                        QJ = QJ + str2num(getProperty(Compensator_P,compid,'Q'));
-                    case nodeName2
-                        QI = QI + str2num(getProperty(Compensator_P,compid,'Q'));
-                        QJ = QJ - str2num(getProperty(Compensator_P,compid,'Q'));
-                end
-            end
-        end
+        
+%         if isKey(Compensator_PPositionMap,lineName)
+%             compids = Compensator_PPositionMap(lineName);
+%             for compidcon = compids
+%                 compid = compidcon{1};
+%                 switch getProperty(Compensator_P,compid,'node')
+%                     case nodeName1
+%                         QI = QI + str2num(getProperty(Compensator_P,compid,'Q'));
+%                         QJ = QJ - str2num(getProperty(Compensator_P,compid,'Q'));
+%                     case nodeName2
+%                         QI = QI - str2num(getProperty(Compensator_P,compid,'Q'));
+%                         QJ = QJ + str2num(getProperty(Compensator_P,compid,'Q'));
+%                 end
+%             end
+%         end
         
         PI_QS = getProperty(ACline,id,'I_P');
         QI_QS = getProperty(ACline,id,'I_Q');
