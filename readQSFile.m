@@ -4,7 +4,6 @@ function result = readQSFile(path)
     result = containers.Map;
     fid = fopen(path,'r');
     tag = 'none';
-    datacount = 2;
     while ~feof(fid)
         thisline = fgetl(fid);
         if length(thisline)<2 continue;end
@@ -17,7 +16,6 @@ function result = readQSFile(path)
                     else
                         tag = thisline;
                     end
-                    datacount = 2;
                     thistable = cell(1);
                 elseif thisline(2)=='/'
                     result(tag) = thistable;
@@ -28,7 +26,6 @@ function result = readQSFile(path)
             case '#'
                 thisitem = containers.Map;
                 propValues = regexp(thisline, '\s+', 'split');
-                datacount = datacount + 1;
                 for id = 2:length(propValues)
                     thisitem(propNames{id}) = propValues{id};
                 end
